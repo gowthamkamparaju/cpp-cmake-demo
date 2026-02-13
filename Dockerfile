@@ -11,4 +11,4 @@ COPY . /app
 RUN cmake -S . -B build
 RUN cmake --build build
 
-CMD ["./build/cpp-demo"]
+CMD ["./build/demo"]
