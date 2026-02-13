@@ -1,4 +1,5 @@
-FROM ubuntu:24.04
+# -------- Stage 1: Build --------
+FROM ubuntu:24.04 AS builder
 
 RUN apt update && apt install -y \
     build-essential \
@@ -12,4 +13,13 @@ COPY main.cpp .
 RUN cmake -B build
 RUN cmake --build build
 
-CMD ["./build/demo"]
+
+# -------- Stage 2: Runtime --------
+FROM ubuntu:24.04
+
+WORKDIR /app
+
+# Copy only compiled binary from builder stage
+COPY --from=builder /app/build/demo ./demo
+
+CMD ["./demo"]
